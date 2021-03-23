@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react'
 
+import { View, Text } from 'react-native';
+
 import * as firebase from 'firebase';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -20,7 +22,7 @@ const firebaseConfig = {
   measurementId: "G-90048M41ND"
 };
 
-if(firebase.apps.length === 0) {
+if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
 
@@ -33,18 +35,53 @@ export class App extends Component {
     this.state = {
       loaded: false,
     }
-  };
+  }
 
-  componentDidMount({})
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        this.setState({
+          loggedIn: false,
+          loaded: true
+        })
+
+        if (user) {
+          this.setState({
+            loggedIn: true,
+            loaded: true
+          })
+        }
+      }
+    })
+  }
   render() {
+    const { loggedIn, loaded } = this.state;
+
+    if (!loaded) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <Text>Loading...</Text>
+        </View>
+      )
+    };
+
+    if(!loggedIn) {
+      return (
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Landing">
+            <Stack.Screen name="Landing" component={LandingScreen} options={{ headersShown: false }} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      );
+    };
+
     return (
-      <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing">
-        <Stack.Screen name="Landing" component={LandingScreen} options={{ headersShown: false }} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <View>
+        <Text>User is logged in</Text>
+      </View>
     )
+
   }
 }
 

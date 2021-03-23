@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { View, Button, TextInput } from 'react-native';
-
+import firebase from 'firebase';
 export class Register extends Component {
     constructor(props) {
         super(props);
@@ -13,36 +13,50 @@ export class Register extends Component {
                 'Where did your mother and father meet?': '',
                 'What was the make and model of your first car?': ''
             },
-            firstName: '',
-            lastName: ''
+            name: '',
         };
         this.onSignUp = this.onSignUp.bind(this);
     };
 
     onSignUp() {
-        
+        const { email, password, securityQuestions, firstName, lastName } = this.state;
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((result) => { 
+            console.log(result);
+        })
+        .catch((error) => {
+            if(error.code === "auth/invalid-email"){
+                alert("invalid email address please try again!")
+            }
+            if(error.code === "auth/weak-password") {
+                alert("Weak Password: \nPassword should be at least 6 characters")
+            }
+        })
     }
     render() {
         return (
             <View>
                 <TextInput
-                    placeholder="first name"
-                    onChangeText={(firstName) => this.setState({ firstName  })}
+                    placeholder="name"
+                    onChangeText={(name) => this.setState({ name })}
                 />
                 <TextInput
-                    placeholder="last name"
-                    onChangeText={(lastName) => this.setState({ lastName  })}
+                    placeholder="email"
+                    onChangeText={(email) => this.setState({ email })}
                 />
                 <TextInput
                     placeholder="password"
                     secureTextEntry={true}
-                    onChangeText={(password) => this.setState({ password  })}
+                    onChangeText={(password) => this.setState({ password })}
                 />
-                <Button 
-                    onPress={() => {this.onSignUp()}}
-                    title="Sign Up" 
+                <Button
+                    onPress={() => { this.onSignUp() }}
+                    title="Sign Up"
                 />
             </View>
         )
     }
 }
+
+
+export default Register

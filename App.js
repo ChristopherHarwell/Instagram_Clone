@@ -1,15 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { Component } from 'react'
+import { StatusBar } from "expo-status-bar";
+import React, { Component } from "react";
 
-import { View, Text } from 'react-native';
+import { View, Text } from "react-native";
 
-import * as firebase from 'firebase';
+import * as firebase from "firebase";
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import LandingScreen from './components/auth/Landing.js';
-import RegisterScreen from './components/auth/Register.js';
+import LandingScreen from "./components/auth/Landing.js";
+import RegisterScreen from "./components/auth/Register.js";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -19,7 +19,7 @@ const firebaseConfig = {
   storageBucket: "instagram-dev-c6bfe.appspot.com",
   messagingSenderId: "1016123619765",
   appId: "1:1016123619765:web:9c16766d3ffe25dda3c1fc",
-  measurementId: "G-90048M41ND"
+  measurementId: "G-90048M41ND",
 };
 
 if (firebase.apps.length === 0) {
@@ -30,59 +30,63 @@ const Stack = createStackNavigator();
 
 export class App extends Component {
   constructor(props) {
-    super(props);
+    super();
 
     this.state = {
       loaded: false,
-    }
+    };
   }
 
   componentDidMount() {
+    console.log(this.state);
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         this.setState({
           loggedIn: false,
-          loaded: true
-        })
-
-        if (user) {
-          this.setState({
-            loggedIn: true,
-            loaded: true
-          })
-        }
+          loaded: true,
+        });
       }
-    })
+      console.log(user)
+      if (user) {
+        this.setState({
+          loggedIn: true,
+          loaded: true,
+        });
+      }
+    });
   }
   render() {
     const { loggedIn, loaded } = this.state;
 
     if (!loaded) {
       return (
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={{ flex: 1, justifyContent: "center" }}>
           <Text>Loading...</Text>
         </View>
-      )
-    };
+      );
+    }
 
-    if(!loggedIn) {
+    if (!loggedIn) {
       return (
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Landing">
-            <Stack.Screen name="Landing" component={LandingScreen} options={{ headersShown: false }} />
+            <Stack.Screen
+              name="Landing"
+              component={LandingScreen}
+              options={{ headersShown: false }}
+            />
             <Stack.Screen name="Register" component={RegisterScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       );
-    };
+    }
 
     return (
       <View>
         <Text>User is logged in</Text>
       </View>
-    )
-
+    );
   }
 }
 
-export default App
+export default App;

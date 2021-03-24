@@ -13,7 +13,7 @@ export class Login extends Component {
                 'Where did your mother and father meet?': '',
                 'What was the make and model of your first car?': ''
             },
-            name: '',
+            username: '',
         };
         this.onSignUp = this.onSignUp.bind(this);
     };

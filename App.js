@@ -5,11 +5,20 @@ import { View, Text } from "react-native";
 
 import * as firebase from "firebase";
 
+import { provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import rootReducer from "./redux/reducers";
+import thunk from "redux-thunk";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import LandingScreen from "./components/auth/Landing.js";
 import RegisterScreen from "./components/auth/Register.js";
+import MainScreen from "./components/Main";
+import { Provider } from "react-redux";
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {

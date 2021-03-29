@@ -55,7 +55,7 @@ export class App extends Component {
           loaded: true,
         });
       }
-      console.log(user)
+      console.log(user);
       if (user) {
         this.setState({
           loggedIn: true,
@@ -91,9 +91,13 @@ export class App extends Component {
     }
 
     return (
-      <View>
-        <Text>User is logged in</Text>
-      </View>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Main">
+            <Stack.Screen name="Main" component={MainScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     );
   }
 }

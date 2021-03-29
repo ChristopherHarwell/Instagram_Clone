@@ -5,7 +5,7 @@ import { View, Text } from "react-native";
 
 import * as firebase from "firebase";
 
-import { provider } from "react-redux";
+import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import rootReducer from "./redux/reducers";
 import thunk from "redux-thunk";
@@ -16,7 +16,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import LandingScreen from "./components/auth/Landing.js";
 import RegisterScreen from "./components/auth/Register.js";
 import MainScreen from "./components/Main";
-import { Provider } from "react-redux";
+import AddScreen from "./components/main/Add";
+
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -95,6 +96,7 @@ export class App extends Component {
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Main">
             <Stack.Screen name="Main" component={MainScreen} />
+            <Stack.Screen name="Add" component={AddScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
